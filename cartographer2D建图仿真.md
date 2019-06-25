@@ -39,13 +39,11 @@ config:用于保存rviz相关文件
 
  我们设计的机器人的底盘模型有7个link和6个joint。7个link包括1个机器人底板，2个电机，2个驱动轮和2个万向轮；6个joint负责将驱动轮、万向轮、电机安装到底板上，并设置相应的连接方式，以下是模型文件的局部内容。
 
-![1561017482082](/home/catalina/.config/Typora/typora-user-images/1561017482082.png)
+![1561017482082](/media/catalina/文档/面试/MapAndLocation/cartographer原理及仿真.assets/1561017482082.png)
 
 我们需要对其添加物理属性和碰撞属性，在base_link中加入<inertial>和<collision>标签。分别描述机器人的物理属性和碰撞属性，其中惯性参数的设置主要包含质量和惯性矩阵。如果是规则物体，可以通过尺寸质量计算得到惯性矩阵。
 
-创建launch文件，launch文件的作用是:同时启动多个节点,使用roslaunch命令运行.launch文件中指定的节点。在launch文件夹中创建文件display.launch，并编辑，代码如下：
-
-![1561017513204](/home/catalina/.config/Typora/typora-user-images/1561017513204.png)
+创建launch文件，launch文件的作用是:同时启动多个节点,使用roslaunch命令运行.launch文件中指定的节点。在launch文件夹中创建文件display.launch，并编辑，代码如下：![1561017513204](/media/catalina/文档/面试/MapAndLocation/cartographer原理及仿真.assets/1561017513204.png)
 
 启动launch文件我们的机器人底盘模型效果如图
 
@@ -114,11 +112,11 @@ xacro文件引用。改进的机器人模型文件详细内容如下
 
 ​	首先尝试创建一个摄像头模型，依照真实摄像探头，我们画了一个长方形，以此代表摄像头模型，对应的模型文件是camera.xacro，如下
 
-![1561017598066](/home/catalina/.config/Typora/typora-user-images/1561017598066.png)
+![1561017598066](/media/catalina/文档/面试/MapAndLocation/cartographer原理及仿真.assets/1561017598066.png)
 
 以上代码使用一个名为usb_camera的宏来描述摄像头，输入参数是摄像头的名称，宏中包含了摄像头长方体link的参数。然后还需要创建一个顶层xacro文件，把机器人和摄像头模块拼装在一起，顶层xacro文件的内容如下。
 
-![1561017646359](/home/catalina/.config/Typora/typora-user-images/1561017646359.png)
+![1561017646359](/media/catalina/文档/面试/MapAndLocation/cartographer原理及仿真.assets/1561017646359.png)
 
 在rviz中可查看机器人模型
 
@@ -126,7 +124,7 @@ xacro文件引用。改进的机器人模型文件详细内容如下
 
 使用类似的方式可以为机器人添加一个激光雷达模型,这里配置raplidar.xacro。
 
-![1561017673459](/home/catalina/.config/Typora/typora-user-images/1561017673459.png)
+![1561017673459](/media/catalina/文档/面试/MapAndLocation/cartographer原理及仿真.assets/1561017673459.png)
 
 未来实现机器人仿真，需要想办法控制机器人在虚拟环境中的运动，另外如果仿真中的传感器可以像真实设备一样获取环境中的信息就更好了。
 
@@ -165,7 +163,7 @@ xacro文件引用。改进的机器人模型文件详细内容如下
 
 在gazebo中显示机器人模型。在launch文件中加载机器人模型，运行gazeb，加载机器人模型，并且启动一些必要节点。
 
-![1561017710725](/home/catalina/.config/Typora/typora-user-images/1561017710725.png)
+![1561017710725](/media/catalina/文档/面试/MapAndLocation/cartographer原理及仿真.assets/1561017710725.png)
 
 以上launch文件主要做的两项工作
 
@@ -186,7 +184,7 @@ xacro文件引用。改进的机器人模型文件详细内容如下
 
 为rplidar模型添加gazebo插件，我们使用的激光雷达是raplidar，在rplidar模型文件中添加<gazebo>标签。
 
-![1561017813496](/home/catalina/.config/Typora/typora-user-images/1561017813496.png)
+![1561017813496](/media/catalina/文档/面试/MapAndLocation/cartographer原理及仿真.assets/1561017813496.png)
 
 激光雷达的传感器类型是ray，rplidar的相关参数可以在产品手册中找到。为了获取尽量贴近真实的仿真效果，需要根据实际参数配置<ray>中的雷达参数：360度检测范围、单圈360个采样点，5.5hz采样频率，最远6m检测范围等。最后用<plugs>标签加载激光雷达的libgazebo_ros_laser.so，所发布的激光雷达的话题是“/scan”
 
