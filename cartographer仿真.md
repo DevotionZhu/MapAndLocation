@@ -2,9 +2,9 @@
 
 # 1、实验仿真
 
-​	cartographer的设计目的是在计算资源有限的条件下，实时获取相对较高精度的2D地图，考虑到基于模拟策略的粒子滤波方法在较大环境下对内存和计算资源的需求较高，cartographer采用图网络的优化方法。目前cartographer主要基于激光雷达来实现SLAM。
+​	cartographer的设计目的是在计算资源有限的条件下，实时获取相对较高精度的地图。考虑到基于模拟策略的粒子滤波方法在较大环境下对内存和计算资源的需求较高，cartographer采用图网络的优化方法。目前cartographer主要基于激光雷达来实现SLAM。
 
-​	我们所有的功能都需要在仿真器中完成，我们需要创建仿真环境，创建搭载深度传感器以及里程计的多功能机器人模型，实现Gazebo中机器人的SLAM并分析实验结果。
+​	为了验证算法的实际效果，在设备有限的条件下，所有的功能都需要在仿真器中完成。要搭建仿真环境，创建搭载深度传感器以及里程计的多功能机器人模型，实现Gazebo中移动机器人的SLAM并分析实验结果。
 
 ## 1.1 创建机器人模型
 
@@ -17,7 +17,7 @@ URDF是一种使用XML格式描述的机器人模型文件
 
 ### 1.1.1 创建机器人描述功能包
 
-在ROS中，所有的ROS软件（包括我们创建的软件）都被组织成软件包的形式。因此，在工作空间catkin_ws/src/目录下通过catkin_create_pkg来创建硬件描述包：
+在ROS中，所有的ROS软件都被组织成软件包的形式。因此，在工作空间catkin_ws/src/目录下通过catkin_create_pkg来创建硬件描述包：
 
 ```
 $ catkin_create_pkg autolabor_description urdf
@@ -33,7 +33,7 @@ launch：用于保存相关启动文件
 
 config:用于保存rviz相关文件
 
-因为建立的是一个非常简单的机器人，所以我们尽量使用简单的元素：使用长方体代替车模，使用圆柱代替车轮
+因为建立的是一个简单的机器人，所以我们尽量使用简单的元素：使用圆柱体代替车模和车轮。
 
 ### 1.1.2 创建URDF模型并显示模型效果
 
@@ -43,13 +43,13 @@ config:用于保存rviz相关文件
 
 我们需要对其添加物理属性和碰撞属性，在base_link中加入<inertial>和<collision>标签。分别描述机器人的物理属性和碰撞属性，其中惯性参数的设置主要包含质量和惯性矩阵。如果是规则物体，可以通过尺寸质量计算得到惯性矩阵。
 
-创建launch文件，launch文件的作用是:同时启动多个节点,使用roslaunch命令运行.launch文件中指定的节点。在launch文件夹中创建文件display.launch，并编辑，代码如下：![1561017513204](cartographer原理及仿真.assets/1561017513204.png)
+创建launch文件，launch文件的作用是同时启动多个节点。使用roslaunch命令运行.launch文件中指定的节点，在launch文件夹中创建文件display.launch，并编辑，代码如下：![1561017513204](cartographer原理及仿真.assets/1561017513204.png)
 
-启动launch文件我们的机器人底盘模型效果如图
+启动launch文件我们的机器人底盘模型，在rviz中显示该模型效果如图
 
 ![](cartographer原理及仿真.assets/微信截图_20190618162731.png)
 
-在rviz中显示该模型，并检查是否符合设计目标。运行成功后会出现一个名为”joint_state_publisher“的UI。这是因为我们在启动文件中启动了join_state_publisher节点，该节点可以发布每个joint的状态，并且可以通过UI对joint进行控制。launch文件中还启动了一个名为robot_state_publisher的节点，其功能是将机器人各个link、joint之间的关系，通过Tf的方式整理成三维姿态信息发布出去，在Rviz中可以选择添加TF插件来显示各部分的坐标系。
+检查是否符合设计目标。运行成功后会出现一个名为”joint_state_publisher“的UI。这是因为我们在启动文件中启动了join_state_publisher节点，该节点可以发布每个joint的状态，并且可以通过UI对joint进行控制。launch文件中还启动了一个名为robot_state_publisher的节点，其功能是将机器人各个link、joint之间的关系，通过Tf的方式整理成三维姿态信息发布出去，在Rviz中可以选择添加TF插件来显示各部分的坐标系。
 
 ### 1.1.3 使用xacro优化urdf
 
@@ -59,12 +59,12 @@ URDF建模存在以下问题
 - 参数修改麻烦，不便于二次开发
 - 没有参数自动计算功能
 
-对于目前的机器人模型而言，我们创建了一个十分冗长的模型文件，其中有很多除了参数，几乎都是重复的内容，ros中提供了一种精简化，可复用，模块化的描述形式--xacro，它具备以下几点突出优势
+对于目前的机器人模型而言，我们创建了一个十分冗长的模型文件，其中有很多除了参数，几乎都是重复的内容，ros中提供了一种精简化，可复用，模块化的描述形式xacro，它具备以下几点突出优势：
 
-- 精简模型代码：xacro是一个精简版的urdf模型，在xacro文件中。可以通过创建宏定义的方式定义常量或者复用代码，不仅可以减小代码量，而且可以让模型代码更加模块化。更具有可读性。
+- 精简模型代码：xacro是一个精简版的urdf模型。在xacro文件中，可以通过创建宏定义的方式定义常量或者复用代码，不仅可以减小代码量，而且可以让模型代码更加模块化。更具有可读性。
 - 提供可编程接口，xacro的语法支持一些可编程接口，如常量、变量、数学公式、条件语句等，可以让建模过程更加智能有效。
 
-xacro是urdf的升级版，后缀名由urdf变成.xacro，而且在模型中需要加入xacro的声明。直接在文件中调用xacro解析器可以自动将xacro转化成urdf文件，在rviz中显示出来。XACRO文件和URDF实质上是等价的. XACRO格式提供了一些更高级的方式来组织编辑机器人描述. 主要提供了三种方式来使得整个描述文件变得简单. 借用在教程中一句话来形容xacro的优势: “Fortunately, you can use the xacro package to make your life simpler”.
+xacro是urdf的升级版，后缀名由urdf变成.xacro，而且在模型中需要加入xacro的声明。直接在文件中调用xacro解析器可以自动将xacro转化成urdf文件，在rviz中显示出来。XACRO文件和URDF实质上是等价的。XACRO格式提供了一些更高级的方式来组织编辑机器人描述. 主要提供了三种方式来使得整个描述文件变得简单。借用在官方文档中一句话来形容xacro的优势: “Fortunately, you can use the xacro package to make your life simpler”。
 
 使用常量定义。在之前URDF模型中有很多尺寸、坐标等常量的使用，但这些常量分布在整个文件中，可读性很差，后期修改也十分困难，xacro提供了一种常量的属性定义方式。
 
@@ -86,9 +86,7 @@ xacro是urdf的升级版，后缀名由urdf变成.xacro，而且在模型中需�
 <origin xyz="0 ${reflect*wheel_joint_y} ${-wheel_joint_z}" rpy="0 0 0"/>
 ```
 
-使用宏定义。xacro文件可以使用宏定义来声明重复使用的代码模块，而且可以包含输入参数，类似编程中的函数概念。例如在mbot底盘上还有两层支撑板，支撑板之间需要八根支撑柱，支撑柱的模型是一样的，只是位置不同。如果用URDF文件描述需要8次，但在xacro中，这种相同的模型就可以通过定义一种宏定义模块的方式来重复使用。
-
-xacro文件引用。改进的机器人模型文件详细内容如下
+使用宏定义。xacro文件可以使用宏定义来声明重复使用的代码模块，而且可以包含输入参数，类似编程中的函数概念。例如在mbot底盘上还有两层支撑板，支撑板之间需要八根支撑柱，支撑柱的模型是一样的，只是位置不同。如果用URDF文件描述需要8次，但在xacro中，这种相同的模型就可以通过定义一种宏定义模块的方式来重复使用。xacro文件引用，改进的机器人模型文件详细内容如下
 
 ```xml
 <?xml version="1.0"?>
@@ -98,9 +96,7 @@ xacro文件引用。改进的机器人模型文件详细内容如下
 </robot>
 ```
 
-<robot>标签之间只有两行代码，第一行代码描述该xacro文件中包含的其他xacro文件，类似c语言中的include文件。声明包含关系后，该文件就可以使用被包含文件中的模块了。第二行代码调用了被包含文件中的宏定义。也就是说模型文件全部是在xacro中使用一个宏来描述的。如果把机器人本体看做一个模块，并且还要与其他模块集成，使用这种方法就不需要修改机器人的模型文件，只需要在上层实现一个拼装模块的顶层文件即可，灵活性更强。比如在机器人中装配camera和激光雷达，只需要修改此xacro文件。
-
-直接在launch中调用xacro文件解析器，自动将xacro文件转化成urdf文件，在终端中启动就可以看到优化后的模型。。
+<robot>标签之间只有两行代码，第一行代码描述该xacro文件中包含的其他xacro文件，类似c语言中的include文件。声明包含关系后，该文件就可以使用被包含文件中的模块了。第二行代码调用了被包含文件中的宏定义。也就是说模型文件全部是在xacro中使用一个宏来描述的。如果把机器人本体看做一个模块，并且还要与其他模块集成，使用这种方法就不需要修改机器人的模型文件，只需要在上层实现一个拼装模块的顶层文件即可，灵活性更强。比如在机器人中装配camera和激光雷达，只需要修改此xacro文件。直接在launch中调用xacro文件解析器，自动将xacro文件转化成urdf文件，在终端中启动就可以看到优化后的模型。。
 
 ```xml
  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find mbot_description)/urdf/xacro/gazebo/mbot_with_laser_gazebo.xacro'" /> 
@@ -118,8 +114,6 @@ xacro文件引用。改进的机器人模型文件详细内容如下
 
 ![1561017646359](cartographer原理及仿真.assets/1561017646359.png)
 
-在rviz中可查看机器人模型
-
 #### 1.2.2 添加激光雷达
 
 使用类似的方式可以为机器人添加一个激光雷达模型,这里配置raplidar.xacro。
@@ -132,13 +126,11 @@ xacro文件引用。改进的机器人模型文件详细内容如下
 
 #### 1.3.1 添加gazebo属性
 
-使用xacro设计的机器人urdf模型已经可以描述机器人外观特征和物理特性，虽然已经具备在Gazebo中仿真的基本条件，但是由于没有在模型中加入Gazebo相关的属性，还是无法让模型在Gazebo仿真环境中动起来。为了可以开始仿真，首先我们需要确保每个link的<inertia>元素进行合理的配置，然后需要为每个必要的<link>、<joint>、<robot>设置<gazebo>标签。gazebo标签是urdf模型中描述gazebo仿真时需要的扩展属性。
+​	使用xacro设计的机器人urdf模型已经可以描述机器人外观特征和物理特性，虽然已经具备在Gazebo中仿真的基本条件，但是由于没有在模型中加入Gazebo相关的属性，还是无法让模型在Gazebo仿真环境中动起来。为了可以开始仿真，首先我们需要确保每个link的<inertia>元素进行合理的配置，然后需要为每个必要的<link>、<joint>、<robot>设置<gazebo>标签。gazebo标签是urdf模型中描述gazebo仿真时需要的扩展属性。
 
-为link添加<gazebo>标签。针对机器人模型，需要对每一个link添加<gazebo>标签，包含的属性仅有material。material属性的作用与link里面material属性的作用相同，Gazebo无法通过<visual>中的material参数设置外观颜色，所以需要单独设置，否则默认情况下Gazebo中显示的模型全是灰白色。
+​	为link添加<gazebo>标签。针对机器人模型，需要对每一个link添加<gazebo>标签，包含的属性仅有material。material属性的作用与link里面material属性的作用相同，Gazebo无法通过<visual>中的material参数设置外观颜色，所以需要单独设置，否则默认情况下Gazebo中显示的模型全是灰白色。
 
-添加传动装置。我们设计的机器人是一个两轮差速驱动的机器人，通过调节两个轮子的速度比例，完成前进、转向、倒退等动作。所以我们需要在模型中加入驱动机器人运动的动力源，这是仿真必不可少的部分。
-
-为了使用ROS控制器驱动机器人，需要在模型中加入<transmission>元素，将传动装置与joint绑定。
+​	添加传动装置。我们设计的机器人是一个两轮差速驱动的机器人，通过调节两个轮子的速度比例，完成前进、转向、倒退等动作。所以我们需要在模型中加入驱动机器人运动的动力源，这是仿真必不可少的部分。为了使用ROS控制器驱动机器人，需要在模型中加入<transmission>元素，将传动装置与joint绑定。
 
 ```xml
 <transmission name="${prefix}_wheel_joint_trans">
@@ -155,9 +147,9 @@ xacro文件引用。改进的机器人模型文件详细内容如下
 
 以上代码中，<joint name ="">定义了将要绑定驱动器的joint，<type>标签声明了所使用的传动装置类型，<hardwareInterface>定义了硬件接口的类型，这里使用的是速度控制接口。
 
-到现在为止，机器人还是一个静态显示的模型，如果要让他动起来，还需要使用gazebo插件。Gazebo插件赋予了URDF模型更加强大的功能，可以帮助模型绑定ROS消息，从而完成传感器的仿真输出以及对电机的控制，让机器人模型更加真实。
+​	到现在为止，机器人还是一个静态显示的模型，如果要让他动起来，还需要使用gazebo插件。Gazebo插件赋予了URDF模型更加强大的功能，可以帮助模型绑定ROS消息，从而完成传感器的仿真输出以及对电机的控制，让机器人模型更加真实。
 
-添加gazebo控制器插件。Gazebo插件可以根据插件的作用范围应用到URDF模型的<robot>、<link>、<joint>上，需要使用<gazebo>标签作为封装。为<robot>元素添加插件，与其他gazebo元素相同，如果gazebo元素中没有设置reference="x"属性，则默认应用于<robot>标签。为link、joint标签添加插件，并加载差速控制的常见，在此过程中需要配置一些列参数。
+​	添加gazebo控制器插件。Gazebo插件可以根据插件的作用范围应用到URDF模型的<robot>、<link>、<joint>上，需要使用<gazebo>标签作为封装。为<robot>元素添加插件，与其他gazebo元素相同，如果gazebo元素中没有设置reference="x"属性，则默认应用于<robot>标签。为link、joint标签添加插件，并加载差速控制的常见，在此过程中需要配置一些列参数。
 
 #### 1.3.2 启动机器人Gazebo仿真
 
@@ -172,7 +164,7 @@ xacro文件引用。改进的机器人模型文件详细内容如下
 
 ![1560907538552](cartographer原理及仿真.assets/1560907538552.png)
 
-控制机器人在gazebo中运动。机器人模型已经加入libgazebo_ros_diff_drive.so插件，可以使用查宿控制实现机器人运动。查看当前系统话题列表
+控制机器人在gazebo中运动。机器人模型已经加入libgazebo_ros_diff_drive.so插件，可以使用传动控制实现机器人运动。查看当前系统话题列表
 
 ![1560907640641](cartographer原理及仿真.assets/1560907640641.png)
 
@@ -180,19 +172,19 @@ xacro文件引用。改进的机器人模型文件详细内容如下
 
 #### 1.3.3 激光雷达仿真
 
-在slam和导航机器人应用中，为了获取更精确的环境信息，往往使用激光雷达作为主要传感器。我们需要在gazebo中为仿真机器人装载一款激光雷达。
+​	在slam和导航机器人应用中，为了获取更精确的环境信息，往往使用激光雷达作为主要传感器。我们需要在gazebo中为仿真机器人装载一款激光雷达。
 
-为rplidar模型添加gazebo插件，我们使用的激光雷达是raplidar，在rplidar模型文件中添加<gazebo>标签。
+​	为rplidar模型添加gazebo插件，我们使用的激光雷达是raplidar，在rplidar模型文件中添加<gazebo>标签。
 
 ![1561017813496](cartographer原理及仿真.assets/1561017813496.png)
 
-激光雷达的传感器类型是ray，rplidar的相关参数可以在产品手册中找到。为了获取尽量贴近真实的仿真效果，需要根据实际参数配置<ray>中的雷达参数：360度检测范围、单圈360个采样点，5.5hz采样频率，最远6m检测范围等。最后用<plugs>标签加载激光雷达的libgazebo_ros_laser.so，所发布的激光雷达的话题是“/scan”
+激光雷达的传感器类型是ray，rplidar的相关参数可以在产品手册中找到。为了获取尽量贴近真实的仿真效果，需要根据实际参数配置<ray>中的雷达参数：360度检测范围、单圈360个采样点，5.5hz采样频率，最远6m检测范围等。最后用<plugs>标签加载激光雷达的libgazebo_ros_laser.so，所发布的激光雷达的话题是“/scan”。
 
-启动仿真环境并加载装配了激光雷达的机器人，查看系统话题列表并确保laser插件已顺利启动。使用命令可查看rplidar的激光数据，并在rviz中显示出来。这里不一一概述。
+​	启动仿真环境并加载装配了激光雷达的机器人，查看系统话题列表并确保laser插件已顺利启动。使用命令可查看rplidar的激光数据，并在rviz中显示出来。
 
 ### 1.4 SLAM建图
 
-​	slam问题可以描述为：机器人在未知环境中从一个未知未知开始移动，移动过程中根据位置估计和地图进行自身定位，同时建造增量式地图，实现机器人的自主定位和导航。要完成机器人的Slam，首先要具备感知周围环境的能力，因为这是用于探测障碍物的关键数据。用于获取深度信息的传感器这里我们主要用激光雷达。
+​	slam问题可以描述为：机器人在未知环境中从一个未知位置开始移动，移动过程中根据位置估计和地图进行自身定位，同时建造增量式地图，实现机器人的自主定位和导航。要完成机器人的Slam，首先要具备感知周围环境的能力，因为这是用于探测障碍物的关键数据，用于获取深度信息的传感器这里我们主要用激光雷达。
 
 #### 1.4.1 传感器数据
 
@@ -216,7 +208,7 @@ float32[] ranges         # 测量的距离数据 [米] (注意: 值 < range_min 
 float32[] intensities    # 强度数据 [device-specific units]
 ```
 
-多线激光发布的是三维PointCloud点运数据，，这里我们是2D建图，仅仅仿真单线激光即可。
+多线激光发布的是三维PointCloud点云数据，这里我们是2D建图，仅仅仿真单线激光即可。
 
 ​	里程计根据传感器获取的数据来估计机器人随实践发生的位置变化。在机器人平台中，较为常见的里程计是编码器，例如机器人驱动轮配备的旋转编码器。当机器人移动时，借助旋转编码器可以测量轮子旋转的圈数，如果知道轮子的周长，便可以计算出机器人单位时间内的速度以及一段时间内的移动距离。里程计根据速度对实践的积分球的位置这种方法对误差十分敏感，所以采取如精确的数据采集，设备标定，数据滤波等措施十分必要的。
 
@@ -256,7 +248,7 @@ geometry_msgs/TwistWithCovariance twist
   float64[36] covariance
 ```
 
-上述数据结构中，除了数据与位置的关键信息外，还包含用于滤波算法的协方差矩阵。在精度要求不高的机器人系统中可以使用默认的协方差矩阵；而在竞答要求高的系统中，需要先对机器人精确建模，再通过仿真、实验等方法确定该矩阵的具体数值。
+上述数据结构中，除了数据与位置的关键信息外，还包含用于滤波算法的协方差矩阵。在精度要求不高的机器人系统中可以使用默认的协方差矩阵；而在精度要求高的系统中，需要先对机器人精确建模，再通过仿真、实验等方法确定该矩阵的具体数值。
 
 #### 1.4.2 仿真平台
 
@@ -443,9 +435,7 @@ roslaunch mbot_gazebo mbot_laser_nav_gazebo.launch
 
 ![1560866876796](cartographer原理及仿真.assets/1560866876796.png)
 
-地图中的蓝色轨迹是机器人移动的路线，在机器人绕环境运动一周之后还有部分地图完全没有变成白色，可以控制机器人到这些位置附近，继续完善地图。
-
-建图完成后，由于cartographer创建的地图与gmapping、hector_slam生成的地图格式不同，需要使用以下命令保存为ROS格式的地图
+地图中的蓝色轨迹是机器人移动的路线，在机器人绕环境运动一周之后还有部分地图完全没有变成白色，可以控制机器人到这些位置附近，继续完善地图。建图完成后，由于cartographer创建的地图与gmapping、hector_slam生成的地图格式不同，需要使用以下命令保存为ROS格式的地图
 
 ```
 rosservice call /finish_trajectory  "map"
@@ -463,25 +453,21 @@ rosservice call /finish_trajectory  "map"
 
 ![1561016473912](cartographer原理及仿真.assets/1561016473912.png)
 
-在我们以录制数据包，rosbag回放数据的形式进行测试的过程中，cartographer出现了极大的延迟，rosbag play约30min，而在rosbag play结束后，建图仍然需要大约1h。
+在我们以录制数据包，回放数据的形式进行测试的过程中，cartographer出现了极大的延迟，rosbag play约30min，而在rosbag play结束后，建图仍然需要大约1h。
 
 # 2、原理及效果分析
 
 ## 2.1 原理分析
 
-​	cartographer是Google的实时室内建图项目，传感器安装在背包上面，可以生成分辨率为5cm的2D格网地图。获得的每一帧laser scan数据，利用scan match在最佳估计位置处插入子图（submap）中，且scan matching只跟当前submap有关。在生成一个submap后，会进行一次局部的回环（loop close），利用分支定位和预先计算的网格，所有submap完成后，会进行全局的回环。
+​	cartographer是Google的实时室内建图项目，传感器安装在上面，可以生成分辨率为5cm的2D格网地图。获得的每一帧laser scan数据，利用scan match在最佳估计位置处插入子图（submap）中，且scan matching只跟当前submap有关。在生成一个submap后，会进行一次局部的回环（loop close），利用分支定位和预先计算的网格，所有submap完成后，会进行全局的回环。
 
-​	submap的构造是一个重复迭代配准scan和submap的过程。利用配准估算出pose对scan进行刚体变换，插入到submap中。连续的scan用来构造submap，这里submap以概率格网的形式表现。每一个scan，在插入格网（submap）时，每一个grid有hits和miss两种情况。离scan终点最近的grid为hits，在scan原点和终点之间相交的grid为miss。之前未观察的grid分配一个概率，已观察的grid进行概率更新。
+​	submap的构造是一个重复迭代配准和submap的过程。利用配准估算出pose对scan进行刚体变换，插入到submap中。连续的帧用来构造submap，这里submap以概率格网的形式表现。每一帧，在插入submap时，每一个网格有hits和miss两种情况。离scan终点最近的grid为hits，在scan原点和终点之间相交的grid为miss。之前未观察的网格分配一个概率，已观察的网格进行概率更新。
 
 ![img](cartographer原理及仿真.assets/20161028151206927)
 
-在scan matching的时候把求pose的问题转换为一个求解非线性最小二乘问题，利用Ceres解决这个问题。因为最小二乘问题是一个局部最优问题，故一个好的初值（pose初值）对求解有很大影响。因此IMU能被用来提供pose初值的旋转变量。在缺乏IMU的时候，可以用提高scan match频率或匹配精度。
+在帧匹配的时候把求位姿的问题转换为一个求解非线性最小二乘问题，利用Ceres解决这个问题。因为最小二乘问题是一个局部最优问题，故一个好的位姿初值对求解有很大影响。因此IMU能被用来提供位姿初值的旋转变量。在缺乏IMU的时候，可以用提高帧配准的频率或匹配精度。
 
-​	利用SPA方法优化scan和submap的pose。存储插入scan位置处对应的pose用来做回环检测。此外，当submap不在变化时，对应pose的scan和submap也被用来做回环。scan match中找到的good match其对应的pose将被用来做优化问题。回环优化问题构造成非线性最小二乘问题，来求解。
-
-![img](cartographer原理及仿真.assets/20161028163603182)
-
-公式中分别为submap的pose，scan的pose，对应submap和scan的pose的相关性，及相关协方差矩阵。
+​	利用SPA方法优化每一帧和submap的位姿。存储插入帧位置处对应的位姿用来做回环检测。此外，当submap不在变化时，对应位姿的scan和submap也被用来做回环。帧配准中找到的最佳匹配其对应的位姿将被用来做优化问题。回环优化问题构造成非线性最小二乘问题，来求解。
 
 ​	在执行全局优化时，Ceres尝试改善IMU和测距传感器之间的姿势。选择良好的采集具有大量的闭环约束（例如，如果您的机器人沿直线然后返回）可以提高这些校正的质量并成为姿势校正的可靠来源。然后，您可以使用制图师作为校准过程的一部分，以提高机器人外部校准的质量。
 
@@ -489,17 +475,11 @@ rosservice call /finish_trajectory  "map"
 
 ### 2.2.1 硬件分析
 
-cartographer的目标是在廉价的传感器设备上也能取得相对较好的建图效果，这里我们 实验机器的性能明显不符合预期。
+cartographer的目标是在廉价的传感器设备上也能取得相对较好的建图效果，这里我们 实验机器的性能明显不符合预期。首先是实验机器的硬件配置（i7-4500U（1.8GHz，双核四线程），8G RAM），满足cartographer的硬件需求（官方文档所述16G RAM在上述测试中限制不大，通过top命令可知上述测试的RAM使用最大30%左右）。对比cartographer论文（Real-Time Loop Closure in 2D LIDAR SLAM）中的硬件配置（Intel Xeon E5-1650（3.2GHz，六核十二线程））。解决方法分为两种：
 
-　首先是实验机器的硬件配置（i7-4500U（1.8GHz，双核四线程），8G RAM），满足cartographer的硬件需求（官方文档所述16G RAM在上述测试中限制不大，通过top命令可知上述测试的RAM使用最大30%左右）；
+- 分离法：将cartographer运行在高性能机器上，运动终端将传感器信息通过无线网络上传，从技术上来说，ROS作为分布式控制系统可以轻松实现这种功能分离，但是存在两个问题：稳定的无线网络和成本。
 
-　对比cartographer论文（Real-Time Loop Closure in 2D LIDAR SLAM）中的硬件配置（Intel Xeon E5-1650（3.2GHz，六核十二线程））；
-
-　解决方法分为两种：
-
-- 分离法：将cartographer运行在高性能机器上，运动终端将传感器信息通过无线网络上传，从技术上来说，ROS作为分布式控制系统可以轻松实现这种功能分离，但是存在两个问题：稳定的无线网络和成本；
-
-- 妥协法：通过调整参数，降低建图质量和鲁棒性，提高实时性，适合计算资源不足的小型工控机以及中小范围建图应用；
+- 妥协法：通过调整参数，降低建图质量和鲁棒性，提高实时性，适合计算资源不足的小型工控机以及中小范围建图应用。
 
 ### 2.2.2 参数改进
 
@@ -513,17 +493,17 @@ cartographer的目标是在廉价的传感器设备上也能取得相对较好�
 
 - 4、POSE_GRAPH.constraint_builder.fast_correlative_scan_matcher.linear_search_window=5.　POSE_GRAPH.constraint_builder.fast_correlative_scan_matcher.angular_search_window=math.rad(20.)，对应于闭环检测（约束检测）时的搜索范围；
 
-​	上述各参数调整核心是闭环检测（约束检测），闭环检测是图优化过程中最为重要的部分，也是最为耗时的部分，因此减少约束总数和搜索范围可以有效提高实时性。
+​	上述各参数调整核心是闭环检测，闭环检测是图优化过程中最为重要的部分，也是最为耗时的部分，因此减少约束总数和搜索范围可以有效提高实时性。
 
 　　cartographer_ros配置文件在cartographer_ros/configuration_files/目录下，cartographer_ros实际应用时需要进行一些参数调整以适配实际情况，以2D建图为例，其配置文件为backpack_2d.lua。
 
 - 1、一个惯导，发布惯导数据/imu (Imu)，惯导坐标系为base_link；
 - 2、一个普通2D激光雷达，发布雷达数据/scan (LaserScan)，tf: base_link->base_laser，修改options.num_laser_scans=1，options.num_multi_echo_laser_scans=0；
 - 3、roslaunch cartographer_ros demo_backpack_2d.launch；
-- 4、如果需要使用odom。一个轮速计，发布/odom (Odometry)，tf: odom->base_link，修改options.published_frame=”odom”，options.use_odometry=true；如果没有惯导或不相信其他传感器，而只使用激光雷达数据。
+- 4、如果需要使用odom。一个轮速计，发布/odom，tf: odom->base_link，修改options.published_frame=”odom”，options.use_odometry=true；如果没有惯导或不相信其他传感器，而只使用激光雷达数据。
 - 5、修改cartographer配置文件：
 
-　　　　TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching=true；
+　　TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching=true；
 
 调整参数之后，同样的bag包，我们的建图效果缩短到40-50分钟，这是一个相对来说比较巨大的提升。
 
