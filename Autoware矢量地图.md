@@ -1,26 +1,17 @@
 
 
-# autoware Vector Map
+## Autoware Vector Map Builder Guide
 
 ## 1、基本操作
 
-### 注册Tier.iv账号
+### 1.1 注册Tier.iv账号
 
-Accessing Vector Map Builder
-
-使用VectorMap及相关服务需要注册T4账号
-注册地址：<https://account.tier4.jp/>
+使用VectorMap及相关服务需要注册T4账号，注册地址：<https://account.tier4.jp/>
 ![img](https://tools.tier4.jp/static/img/2.png)
 
+进入在线标注工具页面地址 ( <http://maps.tier4.jp/>).
 
-
-进入标注地址 ( <http://maps.tier4.jp/>).
-
-![img](https://tools.tier4.jp/static/img/1.png)
-
-### 基本操作
-
-#### 界面结构
+### ![img](https://tools.tier4.jp/static/img/1.png)1.2 编辑界面简介
 
 1. Header menu
 2. Toolbox ( add / edit tools for various objects )
@@ -29,13 +20,13 @@ Accessing Vector Map Builder
 5. Edit panel ( Detailed and Edit panel of the selected object )
 6. VectorMap visualization area
 
-#### 1. Header menu
+#### 1.Header menu
 
-在此菜单的帮助下，您可以加载、导出和创建新项目。
+在此菜单下，您可以加载、导出和创建新项目。
 
-#### ◆ Setting function
+##### ◆ Setting function
 
-FPS设置，增加每秒帧数(FPS)将使屏幕刷新更频繁，将消耗您的计算机资源，默认值是20。如果你遇到一些问题，或者你的电脑没有专门的GPU，试着降低这个值来改善你的体验。允许的最大值是60。这将提供一个平滑的可视化。
+FPS设置，增加每秒帧数(FPS)将使屏幕刷新更频繁，将消耗计算机资源，默认值是20。如果你遇到一些问题，或者你的电脑没有专门的GPU，试着降低这个值来改善你的体验，最大允许值是60，将提供一个平滑的可视化。
 
 ![img](https://tools.tier4.jp/static/img/5.png)
 
@@ -43,68 +34,65 @@ FPS设置，增加每秒帧数(FPS)将使屏幕刷新更频繁，将消耗您的
 
 
 
-#### ◆ User Guide function
+##### ◆ User Guide function
 
-单击Help / UserGuide将显示当前手册。
+单击Help / UserGuide将显示当前用户帮助手册。
 
 ![img](https://tools.tier4.jp/static/img/7.png)
 
-#### 2. Toolbox ( Add / Edit tools for various objects )
+#### 2.Toolbox 
 
-Inside this toolbox you will find the button required to add objects to the VectorMap. Several categories can be find switching while clicking in the tabs.
+在这个工具箱中，您将找到向VectorMap添加对象所需的按钮，在选项卡中单击时可以切换几个类别。
 
-在这个工具箱中，您将找到向VectorMap添加对象所需的按钮。在选项卡中单击时可以找到几个类别的切换。
+#### 3.Camera POV
 
-#### 3. Camera POV
+ vector map可以在二维和三维两种模式下进行可视化。3D模式下，可以在单击和拖动可视化区域的同时移动相机，相机的高度可以通过改变垂直移动(3D)参数来调整。
 
- vector map可以在二维和三维两种模式下进行可视化。在3D模式下，可以在单击和拖动可视化区域的同时移动相机。相机的高度可以通过改变垂直移动(3D)参数来调整。
+#### 4.Project panel
 
-#### 4. Project panel ( Data being read list panel )
-
-The data previously loaded can be displayed or hidden with the help of this panel (ADAS Map, Waypoints, PointCloud and data lists)
-When loading several ADAS Maps in the same project, only one can be shown at a time. To select which one to display, do it so by clicking on the option button next to the name of the map.
-You can also select which sub region of the map to display using the check buttons indicated in ①
-
-在此面板(ADAS Map、Waypoints、PointCloud和数据列表)的帮助下，可以显示或隐藏以前加载的数据。在同一项目中加载多个ADAS Map时，一次只能显示一个。要选择要显示哪一个，单击地图名称旁边的option按钮。你还可以使用414/5000中所示的复选按钮选择要显示地图的哪个子区域
+在此面板(ADAS Map、Waypoints、PointCloud和数据列表)下，可以显示或隐藏以前加载的数据。在同一项目中加载多个ADAS Map时，一次只能显示一个。要选择要显示哪一个，单击地图名称旁边的option按钮。你还可以使用下图的复选按钮选择要显示地图的哪个子区域。
 
 ![img](https://tools.tier4.jp/static/img/8.png)
 
-1. Create / Edit switch ( checkbox ) 
-- -允许在版本和创建模式之间切换。
+> 1. Create / Edit switch ( checkbox ) 
+>
+> - 允许在编辑和创建模式之间切换。
+>
+> 2. Show / hide ( eye icon)
+>
+> - 用于隐藏显示在左侧的对象实例
+>
+> 3. Setting function ( gear icon)
+>
+> - Delete / Focus function
+> - Delete: delete map data
+> - Focus: camera focus
+>
+> 4. Select - deselect function
+>
+> - 选定/取消 子对象
+>
+> 5. Show - hide function
+>
+>    - 显示/隐藏所有的子对象
 
-2. Show / hide ( eye icon)
-- 用于隐藏显示在左侧的对象实例
+#### 5.Edit panel
 
-3. Setting function ( gear icon)
-- Delete / Focus function
-- Delete: delete map data
-- Focus: camera focus
+显示所选对象的详细信息，它还允许更改object的原有参数。
 
-4. Select - deselect function
-- Select / deselect all child objects.
+#### 6.Main page
 
-5. Show - hide function
-- Show / Hide all child objects.
+##### ◆ Focus function
 
-#### 5. Edit panel ( Details and Edit panel of the selected object )
-
-显示所选对象的详细信息。它还允许更改object的固有参数。
-
-#### 6. Main page
-
-#### ◆ Focus function
-
-此函数允许将坐标轴移动到所需位置。这可以通过单击action菜单上的focus按钮，然后将其拖动到新的选定位置来实现。
+此功能允许将坐标轴移动到所需位置。这可以通过单击action菜单上的focus按钮，然后将其拖动到新的选定位置。
 
 ![img](https://tools.tier4.jp/static/img/9.png)
 
 ![img](https://tools.tier4.jp/static/img/10.png)
 
-#### ◆ Shortcuts key
+##### ◆ Shortcuts key
 
-按下Delete键可以将Object从可视化区域中删除。
-
-向量和极点objects可以使用复制/粘贴组合进行复制。
+按下Delete键可以将Object从可视化区域中删除。vector和pole对象可以使用复制/粘贴组合进行复制。
 
 当窗口中显示“复制对象”时，复制的对象将在相同的位置生成。
 
@@ -114,178 +102,163 @@ You can also select which sub region of the map to display using the check butto
 
 ![img](https://tools.tier4.jp/static/img/12.png)
 
-#### Arranging objects
+##### ◆ Arranging objects
 
 ![img](https://tools.tier4.jp/static/img/13.png)
 
-可以移动的Objects将显示如图所示的箭头。
+可以移动的Objects将显示如图所示的箭头。若要沿着所需轴移动对象，请单击并拖动箭头到所需位置。当拖动显示在对象中心的小矩形时，对象也可以沿平面移动。
 
-若要沿着所需轴移动对象，请单击并拖动箭头到所需位置。
+## 2、创建编辑ADASMap
 
-当拖动显示在对象中心的小矩形时，对象也可以沿平面移动。
+### 2.1 创建ADASMap
 
-## 2、创建ADASMap
-
-从顶部标题菜单的Create选项卡中单击Create ADASMap
+从顶部标题菜单的Create选项卡中单击Create ADASMap。
 
 ![img](https://tools.tier4.jp/static/img/14.png)
 
 为新Map编写一个名称，选择一个平面参考编号(见下图)，然后单击Create按钮。
 
-Write a name, choose a Plane reference number (see below) for the new map, and click the Create button.
-
 ![img](https://tools.tier4.jp/static/img/15.png)
 
-Reference number refers to the position according to this link.
-
-参考编号是指根据这个链接的位置。
+参考编号是指根据下面链接查询到的位置确定。
 
 ["わかりやすい平面直角座標系｜国土地理院" - http://www.gsi.go.jp/sokuchikijun/jpc.html](http://www.gsi.go.jp/sokuchikijun/jpc.html)
 
 ![img](https://tools.tier4.jp/static/img/16.png)
 
-通过点击顶部栏头菜单中的“导入PCD…”按钮加载PCD文件(点云数据)
+通过点击顶部栏头菜单中的“导入PCD…”按钮加载PCD文件(点云数据)。
 
 ![img](https://tools.tier4.jp/static/img/17.png)
 
-Select PCD folders/files using the Browse… button.
-
-使用Browse…按钮选择PCD文件夹/文件。
+点击Browse…按钮选择PCD文件夹/文件。
 
 ![img](https://tools.tier4.jp/static/img/18.png)
 
-Click the import button after selecting the checkbox of reading the file and setting Max Intensity.
-And the initial setting value of Max Intensity is 10.
-
-选择“读取文件并设置最大强度”复选框后，单击“导入”按钮。
-
-最大强度初始设定值为10。
+选择“读取文件并设置最大强度”复选框后，单击“导入”按钮。最大Intensity初始设定值为10。
 
 ![img](https://tools.tier4.jp/static/img/19.png)
 
-## 3、ADASMap编辑
+### 2.2、ADASMap编辑
 
-## Import
+#### 2.2.1 导入
 
-\1. Click “Import ADASMap…” button from the header menu at the top, and select ADAS Map folder you want to read. 
-\2. Select the folder containing the list of CSV files to be read.
-\3. Import the map files using the Import button.
+- 从顶部的标题菜单中点击“导入ADASMap…”按钮，选择要读取的ADASMap文件夹。
 
-1. 从顶部的标题菜单中点击“导入ADASMap…”按钮，选择要读取的ADASMap文件夹。
+- 选择包含要读取的CSV文件列表的文件夹。
 
-2. 选择包含要读取的CSV文件列表的文件夹。
+- 使用Import按钮导入map文件。
 
-3.使用Import按钮导入map文件。
+#### 2.2.2 编辑 (包括路网图 )
 
-## Edit ( ex. Road Network ))
+- 从右上角的项目面板中，选择要编辑的数据(例如，在编辑路网时选择道路区域)
 
-1. From the upper right project panel, select the desired data to edit ( ex. Select the Road region when you edit the Road network )
-   2. Select the node and lane desired to edit
-      3. Once selected, the parameters can be changed in the upper right edit panel. 
-         4. New nodes and lanes can be added from the toolbox.
+- 选择要编辑的节点和车道
 
- 1从右上角的项目面板中，选择要编辑的数据(例如，在编辑路网时选择道路区域)
+- 一旦选中，可以在右上角的编辑面板中更改参数。
 
-2选择要编辑的节点和lane
+- 可以从工具箱中添加新的节点和车道。  
 
-3一旦选中，可以在右上角的编辑面板中更改参数。
+#### 2.2.3 导出
 
-4可以从工具箱中添加新的节点和通道。  
+- 选择要导出的ADASMap，然后从顶部的标题菜单单击“导出ADASMap…“按钮。
 
-## Export
+- 将zip文件下载到本地
 
-\1. Select the desired ADAS map to export, then click “Export ADASMap...” button from the header menu at the top.
-\2. Download the zip file to the local place.
+## 3、ADASMap规范中的道路元素
 
-## Objects in the ADASMap specification
+### 3.1 基本道路元素
 
-### Road
+#### Road
 
-・Node、Lane
-・Way area
-・Dtlane：not supported in current release
+・Node、Lane （车道、节点）
+・Way area（可行驶区域）
+・Dtlane：（目前不支持）
 
-### Road Shape
+#### Road Shape
 
 ・Curb
-・Roadedge
-・Gutter
-・Intersection
+・Roadedge（路边缘）
+・Gutter（侧水沟）
+・Intersection（路口）
 
-### 道路表面（Road Surface）
+#### Road Surface（路面）
 
-・Whiteline
-・Stopline
-・Zebrazone
-・Crosswalk
-・RoadSurfaceMark
+・Whiteline（白线）
+・Stopline（停车线）
+・Zebrazone（斑马线）
+・Crosswalk（人行横道）
+・RoadSurfaceMark（路面标识）
 
-### Roadside
+#### Roadside
 
-・Guardrail
-・Sidewalk
+・Guardrail（护栏）
+・Sidewalk（人行道）
 
-### Structure
+#### Structure
 
-・Pole
-・Utilitypole
-・Roadsign
-・Signaldata
-・Streetlight
+・Pole（杆）
+・Utilitypole（电线杆）
+・Roadsign（标识）
+・Signaldata（信号灯）
+・Streetlight（路灯）
 ・Curvemirror
 ・Wall
-・Fence
-・RailroadCrossing
+・Fence（围栏）
+・RailroadCrossing（铁路道口）
 
-### Road
+### 3.2 道路元素的编辑方法
 
-The purpose of Road is to express the road line, and network information using Node, Lane, Dtlane, and Way area.(Dtlane not supported in current release).Be sure to select the Road network using the checkbox in the project panel to edit the corresponding Road data.
+#### 3.2.1 Road
 
-#### ■ Node, Lane
+Road的目的是利用节点、车道、Dtlane和路域来表达道路线和路网信息，(当前版本不支持Dtlane)。请确保使用项目面板中的复选框选择道路网络，以编辑相应的Road数据。
 
-Lane is used to define the road where vehicles drive.
-It is made up of two nodes. The default length is 1m on general roads,5m on highways. 
-〔 How to create 〕
+■ Node, Lane
+
+Lane用来定义车辆行驶的车道。它由两个node组成，一般公路的默认长度为1米，高速公路为5米。
 
 ![img](https://tools.tier4.jp/static/img/20.png)
 
 ![img](https://tools.tier4.jp/static/img/21.png)
 
-① Add a node by clicking Add Node button. 
-② Add a Lane by clicking “Add Node with Lane” while selecting the ending node.
-Working with lanes
-③ Input Dtlane ID in the DID field.（Dtlane not supported in current release.）
-④ Specify the current lane branching/merging pattern in JCT.
-　 normal (0), branch to the left (1) branch to the right (2), merge to the left (3) merge to the right (4) ）
-⑤ Excluding BLID, specify the lane ID merged to this lane in the BLID2-4 field. 
-　( Choose 0 ( if None ) when no lane is merged. )
-⑥ Excluding FLID, specify the lane ID branch to this lane in the FLID2-4 field. 
-　( Choose 0 ( if None ) when no lane is branched. )
-⑦ Crossing ID. (Use only on intersections, input the Cross ID, otherwise value is 0 ）
-⑧ Number of lanes in the LCnt field. （ Inner intersection is 0 ）
-⑨ Number of lanes in the Lno field. 
-　（ Set it to 1 from the left lane. Inner intersection is 0 ） 
-⑩ Maximum speed in the LimitVel field.
-⑪ Target speed ( estimated speed during driving ) in the RefVel field.
-⑫ Lane Type.
-　（ 0: Center lane, 1: Left lane, 2: Right lane ）
-⑬ Input Road section in the RoadSecID field.
-　（ Inside Intersection is 0, Adjacent lanes usually have the same RoadSecID. ）
-⑭ Select whether lanes can be changed or not in the LaneChgFG field.
-　（ 0: Permitted, 1: Not permitted ( Inside intersection is 0 ) ）
-⑮ Way area ID in the LinkWAID field.
-⑯ Repeat ② to ⑮ . 
+①点击”add Node“按钮添加一个节点。
 
-#### ■ Lanes
+②点击“Add Node with Lane”添加一个车道节点，并选择结束节点。
 
-There are two main functions of the Lane object
+③输入Dtlane ID的字段。(Dtlane当前版本不支持)。
 
-##### ◯ Reverse Direction
+④在JCT中指定当前车道分支/合并模式 (正常(0),branch to the left (1)branch to the right(2),合并到左车道(3)合并到右车道(4)))
 
-This function allows to change the lane direction by replacing BNID and FNID.
+⑤不包含BLID，在BLID2-4 字段指定要合并到当前车道的Lane ID。(0表示没有合并lane)
 
-〔 Method of operation 〕
-After selecting the lane desired to change its direction, click “ Change direction ” button in Edit panel.
+⑥包含FLID，在FLID2-4 中指定要分流出去的车道LaneID。(当车道没有分支时，选择0)
+
+⑦Crossing ID。(只使用在十字路口,输入CrossingID,否则值为0)
+
+⑧LCnt中指定车道数。(内部交叉是0)
+
+⑨车道在Lno field的数量。从左边的车道开始编号，内部交叉是0。
+
+⑩LimitVel 设定的最大速度。
+
+⑪RefVel 中指定目标运动速度(驾驶期间估计速度)。
+
+⑫在LaneType指定车道类型。（ 0: 直行, 1: 左转, 2:  右转 ）
+
+⑬在RoadSecID 中指定路段。(在十字路口是0,相邻车道通常具有相同的RoadSecID)
+
+⑭LaneChgFG中指定是否车道允许变道。(0:允许,1:不允许(0)在十字路口)
+
+⑮在LinkWAID中指定Way area ID。
+
+⑯重复②⑮
+
+■ Lanes
+
+Lane元素有两个主要功能
+
+**◯ Reverse Direction 反向**
+
+该功能允许通过替换BNID和FNID来改变车道方向。选择想要改变方向的车道后，点击编辑面板中的“Change direction”按钮。
 
 ![img](https://tools.tier4.jp/static/img/22.png)
 
@@ -293,304 +266,253 @@ After selecting the lane desired to change its direction, click “ Change direc
 
 
 
-##### ◯ Lane Split
+##### ◯ Lane Split 车道分割
 
-This function allows to split a lane larger than 1m. 
-（ Display [Split Lane] button in Action when select a lane which is over 1m ）
-
-〔 Method of operation 〕
-After selecting the lane to split, click “Split Lane” button in Action.
-
-
+此函数允许分割大于1m的车道。显示[Split Lane]按钮，选择一个大于1米的车道，选择要分割的车道后，点击“Split Lane”按钮。
 
 　　![img](https://tools.tier4.jp/static/img/24.png)↓　　
 
 ![img](https://tools.tier4.jp/static/img/25.png)
 
-#### ■ Wayarea
+##### ■ Wayarea
 
-Wayarea defines the area of the road that vehicles can drive onto.
-
-〔 Method of operation 〕
+Wayarea定义了车辆可以行驶的道路区域。
 
 ![img](https://tools.tier4.jp/static/img/25.png)
 
-① Add Wayarea by clicking “Add Wayarea” button.
-② Extend Wayarea by clicking “Add line of Area” button.
-（※ Dot lane means the connect from start point to end point. ) ③ Repeat ②.
+① 点击 “Add Wayarea” 按钮添加Wayarea
+② 点击 “Add line of Area” 按钮扩展 Wayarea。（Dot lane 是一条连接起点到终点的虚线 ) 
 
-#### ■ Dtlane
+③ Repeat ②.
 
-Dtlane contains a Linear element and longitudinal transverse gradient added.
-Not supported in this version.
+##### ■ Dtlane
 
-### Road Shape
+Dtlane是为道路或车道中心线添加了线性元素和纵向横向坡度的数据，承担着中心线性数据的作用。暂时不支持。
 
-The purpose of Road shape is to define the road shape by using Curve, Road Edge, Gutter and Intersection. You need to confirm selecting Road Shape checkbox in project panel to edit Road Shape data. Finally, specify Linked ID for each element.
-
-#### ■ Curb
-
-〔 How to create 〕
+#### 3.2.2 Road Shape
 
 
+
+Road shape的目的是利用曲线、道路边缘、侧水沟和交叉口来确定道路的形状。需要确认在项目面板中选择道路形状复选框以编辑道路形状数据。最后，为每个元素指定链接ID。
+
+##### ■ Curb
 
 ![img](https://tools.tier4.jp/static/img/25.png)
 
 ![img](https://tools.tier4.jp/static/img/25.png)
 
-① Add Curb by clicking “Add Curb” button.
-② Set the height of curb at Height.
-③ Define the width of curb using the Width parameter.
-　（ the direction of width is set using the Dir param, explained below ）
-④ Set the direction of the recently created curb using Dir parameter ( right : 1, left : 0 ）
-⑤ Input the closest lane ID in LinkID after selecting Lane.
-⑥ Expand Curb by clicking “Add Curb” button after selecting the end node.
-⑦ Repeat ② to ⑥ .
+①点击“Add Curb”按钮添加路边Curb。
+②在Height中设置curb的高度。
+③使用宽度参数定义ciurb的宽度。(宽度方向设置使用Dir参数,下面解释)
+④使用Dir参数设置新创建的curb的方向(右:1、左:0)
+⑤选择车道后，在LinkID指定距离最近的车道ID。
+⑥扩大curb区域后,点击“添加curb”按钮选择结束节点。
+⑦重复②到⑥。
 
-#### ■ RoadEdge
-
-〔 How to create 〕
+##### ■ RoadEdge
 
 ![img](https://tools.tier4.jp/static/img/28.png)
 
-① Add a RoadEdge element by clicking “Add RoadEdge” button. 
-② Set the nearest lane ID in LinkedID after selecting Lane.
-③ Expand the RoadEdge by clicking “Add RoadEdge” button after selecting the end node.
-④ Repeat ② and ③ .
+①点击“Add RoadEdge”按钮，添加一个RoadEdge元素。
+②选择车道后，在LinkedID中指定距离最近的车道ID。
+③点击“Add RoadEdge”按钮，选择结束节点后，扩大RoadEdge区域。
+④重复②和③。
 
-#### ■ Gutter
+##### ■ Gutter
 
-〔 How to create 〕
+①点击“Add Gutter”按钮添加Gutter。
+②选择车道后，在LinkedID中设置最近的LaneID。
+③指明Gutter使用类型参数的类型。（ 0 : No lid（无盖子）, 1 : With lid, 2 : Grating（光栅） ）
+④通过点击“Add line of Area”按钮扩大Gutter。
+⑤重复④。
 
-![img](https://tools.tier4.jp/static/img/29.png)
+##### ■ Intersection（十字路口）
 
-① Add Gutter by clicking “Add Gutter” button. 
-② Set the closest lane ID in LinkedID after selecting Lane.
-③ Indicate the type of Gutter using the Type parameter.
-（ 0 : No lid, 1 : With lid, 2 : Grating ）
-④ Expand the Gutter by clicking “Add line of Area” button. 
-⑤ Repeat ④.
-
-#### ■ Intersection
-
-The area of ideal intersection until stopline.Circumference is usually the same line as road edge. 
-〔 How to create 〕
+十字路口范围以stopline和road edge确定，圆周线通常与路边缘线相同。
 
 ![img](https://tools.tier4.jp/static/img/30.png)
 
-① Add an intersection by clicking “Add intersection”.
-② Set the closest lane ID using LinkID parameter.
-③ Expand the intersection by clicking “Add line of Area” button.
-④ Repeat ③ .
+①点击“Add intersection”添加一个十字路口。
+②使用LinkID指定最近的Lane ID。
+③通过点击“Add line of Area”按钮扩大交叉区域。
+④重复③。
 
-### Road Surface
+#### 3.2.3 Road Surface
 
-The purpose of Road surface is to express the line and mark etc. on the road by using White line、Stop Line、Zebrazone、Crosswalk、 RoadSurfaceMark. You need to confirm selecting Road Surface checkbox in project panel to edit Road Surface data.And you have to specify Linked ID to all element.
+路面的作用是用白线、停车线、斑马线、人行横道、路面标识来表达道路上的线条、标志等。需要确认在项目面板中选择路面复选框以编辑路面数据，你必须指定链接ID到所有元素。
 
-#### ■ Whiteline
-
-〔 How to create 〕
+##### ■ Whiteline
 
 ![img](https://tools.tier4.jp/static/img/31.png)
 
 ![img](https://tools.tier4.jp/static/img/32.png)
 
-① Add a white line by clicking “Add White line” button.
-② Set the width of the line using the Width parameter.
-③ Select the color of line with the Color parameter.
-（ White：W（White）, Yellow：Y（Yellow））
-④ Select the type of line.
-（ 0 : Solid line, 1 : Dotted line, 2 : Blank of dotted line）
-⑤ Set the closest lane ID using LinkID.
-⑥ Extend white line by clicking Add White line after selecting “Add Whiteline”.
-⑦ Repeat ② to ⑥ .
+①通过点击“Add White line”按钮，添加一条白线。
+②在Width中设置线的宽度。
+③Color中指定线的颜色参数。(白:W,黄色:Y）
+④在Type中指定线的类型。(0:实线,1:虚线,2:空白虚线)
+⑤使用LinkID指定最近的车道ID。
+⑥点击添加白线后，选择“add Whiteline”扩展白线。
+⑦重复②到⑥。
 
-#### ■ Stopline
-
-〔 How to create 〕
+##### ■ Stopline
 
 ![img](https://tools.tier4.jp/static/img/33.png)
+①点击“Add Stopline”按钮，添加停车线。
+②在TLID中指定信号灯id。
+③SignID中指定标识id。
+④在LinkID中指定最近的LaneID。(如果有多个信号灯、标志的情况下，③和④选择最接近的那个)
 
-① Add a Stopline by clicking “Add Stopline” button.
-② Set the associated signal lamp id in the TLID parameter.
-③ Define the associated sign id in the SignID parameter.
-④ Set the closest Lane ID using the LinkID parameter.
-（※ In ③ and ④, reflect the closer one if there are multiple signal lamps and signs ）
-
-#### ■ Zebrazone
-
-〔 How to create 〕
+##### ■ Zebrazone
 
 ![img](https://tools.tier4.jp/static/img/34.png)
 
-① Add a Zebrazone by clicking “Add Zebrazone” button. 
-② Set the closest lane ID in the LinkID parameter.
-③ Extend the zebrazone by clicking “Add lane of Area” button.
-④ Repeat ③.
+①通过点击“add Zebrazone”按钮，添加一个斑马线。
+②在LinkID指定最近的LaneID。
+③通过点击“Add lane of Area”按钮，延长斑马线。
+④重复③。
 
-#### ■ Crosswalk
+##### ■ Crosswalk
 
-Crosswalk is made of borders, striped pattern and bicycle passage zone (in most of the cases).
-〔 How to create 〕
+大多数情况下，人行横道由边界、条纹图案和自行车通行区组成。
 
+![img](https://tools.tier4.jp/static/img/35.png)
 
+①点击“Add Crosswalk”，添加一个人行横道(条纹模式和自行车道)。
+②通过点击“Add line of Area”，扩大人行横道(条纹模式和自行车道)”。
+③在Type里面选择人行横道样式。(1:条纹模式,2:自行车道)
+④在LinkID中指定最近的LaneID。
+⑤在BdID field中设置边界（Type指定为0）。
+⑥重复①到⑤。
+⑦ 在创建人行横道(条纹模式和自行车道)后，通过点击“ Add Crosswalk(①)”按钮添加人行横道(边界)
+⑧)点击 Add line of Area(②)扩展人行横道(边界）。
+⑨在Type中指定的边界(0:边)
+⑩在LinkID中指定最近的车道ID (④)。
+⑪边界的BdID中设定为“0”。
 
-① Add a Crosswalk ( striped pattern and bicycle passage zone ) by clicking “Add Crosswalk” .![img](https://tools.tier4.jp/static/img/35.png)
-② Expand Crosswalk ( striped pattern and bicycle passage zone ) by clicking “Add line of Area”.
-③ Select the crosswalk pattern using Type.
-（ 1 : striped pattern, 2 : bicycle passage zone ）
-④ Set the closest Lane ID in the LinkID field. 
-⑤ Set the border id on the BdID field.
-⑥ Repeat ① to ⑤ .
-⑦ Add Crosswalk ( border ) by clicking Add Crosswalk(①) after creating Crosswalk ( striped pattern and bicycle passage zone ) by clicking “Add Crosswalk(①)” button.
-⑧ Extend Crosswalk ( border ) by clicking Add line of Area (②).
-⑨ Select the border in the Type field(③)（ 0 : border ）
-⑩ Define the nearest Lane ID in the LinkID parameter (④). 
-⑪ Set “0” in the BdID field. 
-
-#### ■ RoadSurfaceMark
-
-〔 How to create 〕
+##### ■ RoadSurfaceMark
 
 ![img](https://tools.tier4.jp/static/img/36.png)
 
-① Add a RoadSurfaceMark by clicking “RoadSurfaceMark” button.
-② Extend RoadSurfaceMark by clicking “Add line of Area”.
-③ Set the meaning of RoadSurfaceMark at Type by character.
-④ Input the nearest Lane ID in the LinkID field. 
-⑤ Repeat ②.
+①单击“RoadSurfaceMark”按钮添加一个RoadSurfaceMark。
+②通过点击“Add line of Area”，扩展RoadSurfaceMark。
+③在Type中用字符形式说明RoadSurfaceMark的实际意义。
+④在LinkID中指定最近的车道ID。
+⑤重复②到④。
 
-### Road Side
+#### 3.2.4 Road Side
 
-Road Side is made of Guardrail and Sidewalk.You need to confirm selecting Road Side’s checkbox in project panel to edit Road Side’s data. And you have to specify Linked ID to all element.
+Road Side由护栏和人行道组成。需要确认在项目面板中选择路侧复选框以编辑Road Side数据，必须指定所有元素的LinkID。
 
-#### ■ Guardrail
-
-〔 How to create 〕
+##### ■ Guardrail（护栏）
 
 ![img](https://tools.tier4.jp/static/img/37.png)
 
-① Add Guardrail by clicking “Add Guardrail” button. 
-② Expand Guardrail by clicking “Add line of Area”.
-③ Select wing type in the Type field. ( 0 : Feathers , 1: Pipe )
-④ Input the near lane id on the LinkID parameter. 
+①点击“Add Guardrail”按钮添加护栏。
+②点击“Add line of Area”扩大护栏。
+③在Type字段中设置wing 类型。(0-plate, 1-pipe)
+④在LinkID中指定最近的车道id。
 
-#### ■ Sidewalk
-
-〔 How to create 〕
+##### ■ Sidewalk（人行道）
 
 ![img](https://tools.tier4.jp/static/img/38.png)
 
-① Add Sidewalk by clicking “Add Sidewalk” button.
-② Expand Sidewalk by clicking “Add line of Area”. 
-③ Input the near lane id in the LinkID field.
-④ Repeat ②.
 
-### Structure
 
-The purpose of Structure is to express the structure on the map by using Pole, Utility pole、Road sign, Signal data, Streetlight, Curb mirror, Wall, Fence, Railroad Crossing.You need to confirm selecting Strucuture checkbox in project panel to edit Structure data.And you have to specify Linked ID to all element.
+①通过点击“Add Sidewalk”按钮添加人行道。
+②通过点击“Add line of Area”，扩大人行道。
+③在LinkID中指定最近的车道id。
+④重复②。
 
-#### ■ Pole
+#### 3.2.5 Structure
 
-There are various pole such as sign poles, guardrail poles and guard poles that exist alone.
-〔 How to create 〕
+Structure的目的是利用杆子、电线杆、路牌、信号数据、路灯、Curb mirror、墙、栅栏、路道口等在地图上表达元素结构。您需要在项目面板中确认选择Strucuture复选框以编辑Structure数据。必须指定所有元素的Linked ID。
+
+##### ■ Pole
+
+有各种各样的杆单独存在，如标志杆、护栏杆和护栏杆。
 
 ![img](https://tools.tier4.jp/static/img/39.png)
 
-① Add Pole by clicking “Add Poledata” button.
-② Write the nearest Lane ID in the LinkID field.
-③ Input the length of pole in Length and the dimension of pole in the Dem fields.
+①点击“Add Poledata”按钮添加Pole。
+②在LinkID中指定最近的车道ID。
+③在Length中设定杆的长度，在Dem中设定杆的粗细。
 
-#### ■ Signal data
+##### ■ Signal data
 
-To be as accurate as possible and indicate the direction of the signal lamp. Obtain the direction vector from the center of the traffic signal lamp.
-〔 How to create 〕
+为了尽可能准确地指示信号灯的方向，需要从交通灯中心得到方向向量。
 
 ![img](https://tools.tier4.jp/static/img/40.png)
+①通过点击“Add Signaldata”按钮，添加Signaldata。
+②在PLID中设定信号灯的所在杆的ID。
+③在Type中设定信号灯的类型。(1:红色,2:蓝色,3:黄色,4:行人信号红色,5:行人信号蓝色,9:其他)
+④在LinkID 中设定最近的车道。
+⑤通过Hang和Vang调整水平和垂直角度
 
-① Add Signaldata by clicking “Add Signaldata” button.
-② Input the pole of signal lamp in the PLID field to set the parent pole.
-③ Select the type of lamp using the Type field.
-（ 1 : Red, 2 : Blue, 3 : Yellow, 4 : Pedestrian signal red, 5 : Pedestrian signal blue, 9 : other ）
-④ Input the nearest Lane ID using the LinkID field. 
-⑤ Input the rotation angles at Hang, Vang to adjust the direction of the vector.
+##### ■ Road sign
 
-#### ■ Road sign
-
-Obtain the vector indicating the direction from the center of the signal plate.When a pole is required, make sure to set its ID.
-〔 How to create 〕
+从信号板的中心得到指示方向的向量，当需要一个杆时，确保设置它的ID。
 
 ![img](https://tools.tier4.jp/static/img/41.png)
 
-① Add Roadsign by clicking “Add Roadign” button. 
-② Input the id of the follow pole using the PLID field.
-③ Input the nearest lane ID in the LinkID field.
-④ Input the rotation angles in the Hang, and Vang fields to adjust the direction of the vector.
+①单击“Add Roadign”按钮添加Roadsign。
+②在PLID 中指定杆的id。
+③在LinkID中指定最近的车道LaneID。
+④通过Hang和Vang调整水平和垂直角度
 
-#### ■ Utility pole
+##### ■ Utility pole
 
-It might no be possible to set the height of the utility pole in certain cases.
-〔 How to create 〕
+在某些情况下，可能无法设置电线杆的高度。
 
 ![img](https://tools.tier4.jp/static/img/42.png)
 
-① Add Utility pole by clicking “Utilitypole” button. 
-② Input the nearest lane id using the LinkID field.
-③ Input the length of the pole in the Length field and the dimension of pole in Dem.
+①单击“Utilitypole”按钮添加电线杆。
+②在LinkID中指定最近的车道ID。
+③在Length中指定杆的长度，在Dem中指定的粗细。
 
-#### ■ Street light
+##### ■ Street light
 
-It is assumed as a recognizable feature from a vehicle during night.
-When a pole is required, make sure to set its ID. Only straight poles are supported.
-〔 How to create 〕
+它是是夜间行驶的重要特征物。需要杆时，请务必设置其ID， 仅支持直杆。
 
 ![img](https://tools.tier4.jp/static/img/43.png)
 
-① Add street light by clicking “Add Streetlight”.
-② Input the id of the following pole in the PLID field.
-③ Input the nearest lane id in the LinkID field.
+① 点击 “Add Streetlight”添加街道路灯
+②在 PLID 中 指定杆的id
+③  在LinkID中指定最近的LaneID .
 
-#### ■ Curve mirror
+##### ■ Curve mirror
 
-Get the direction vector from the center of the mirror.When a pole is required, make sure to set its ID.
-〔 How to create 〕
+从mirror中心获取方向向量（方向是镜面中心向外指出）。当需要杆时，请务必设置其ID。
 
 ![img](https://tools.tier4.jp/static/img/44.png)
 
-① Add Curve mirror by clicking “Curve mirror” button.
-② Input the id of the follow pole in the PLID field.
-③ Input the nearest lane id in the LinkID field.
-④ Input the length of the pole in the Length field and its dimension in Dem.
+①单击“Curve mirror”按钮添加Curve mirror。
+②在PLID中指定杆的id。
+③在LinkID中指定最近的车道ID。
+④在Length中指定杆的长度，在Dem中指定杆的粗细。
 
-#### ■ Wall
-
-〔 How to create 〕
+##### ■ Wall
 
 ![img](https://tools.tier4.jp/static/img/45.png)
 
-① Add a Wall by clicking the “Add Wall” button.
-② Expand a Wall by clicking “Add line of Area” button.
-③ Repeat ②.
-④ Input the nearest lane id in the LinkID field.
+①单击“Add Wall”按钮添加wall。
+②单击“Add line of Area”按钮扩展wall。
+③重复②。
+④在LinkID中指定最近的LaneID。
 
-#### ■ Fence
-
-〔 How to create 〕
+##### ■ Fence
 
 ![img](https://tools.tier4.jp/static/img/46.png)
+①单击“Add Fence”按钮添加栅栏。
+②单击“Add line of Area”按钮展开栅栏。
+③重复②。
+④在LinkID中指定最近的LaneID。
 
-① Add a Fence by clicking the “Add Fence” button.
-② Expand a Fence by clicking the “Add line of Area” button.
-③ Repeat ②.
-④ Input the nearest lane id in the LinkID field.
-
-#### ■ Railroad Crossing
-
-〔 How to create 〕
+##### ■ Railroad Crossing
 
 ![img](https://tools.tier4.jp/static/img/47.png)
 
-① Add a Railroad Crossing by clicking “Add RailroadCrossing” button.
-② Expand a Railroad Crossing by clicking “Add line of Area” button.
-③ Repeat ②.
-④ Input the nearest lane ID in the LinkID field.
+①单击“add RailroadCrossing”按钮添加铁路交叉口。
+②单击“Add line of Area”按钮扩展铁路交叉口。
+③重复②。
+④在LinkID中指定最近的LaneID。
