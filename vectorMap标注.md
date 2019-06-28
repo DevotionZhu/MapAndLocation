@@ -7,11 +7,14 @@
 ### 1.1 注册Tier.iv账号
 
 使用VectorMap及相关服务需要注册T4账号，注册地址：<https://account.tier4.jp/>
-![img](https://tools.tier4.jp/static/img/2.png)
+
+![img](vectorMap标注.assets/2.png)
 
 进入在线标注工具页面地址 ( <http://maps.tier4.jp/>).
 
-### ![img](https://tools.tier4.jp/static/img/1.png)1.2 编辑界面简介
+![img](vectorMap标注.assets/1.png)
+
+### 1.2 编辑界面简介
 
 1. Header menu
 2. Toolbox ( add / edit tools for various objects )
